@@ -357,15 +357,35 @@
   .schedule-list li span{color:var(--muted-on-ink); line-height:1.5;}
 
   @media (max-width:768px){
-    .calendar-header-row{padding:18px 18px 14px; flex-direction:column; align-items:flex-start;}
-    .calendar-content{padding:18px;}
-    .calendar-weekdays,.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
-    .calendar-day{min-height:118px;}
+    .calendar-shell{border-radius:22px;}
+    .calendar-header-row{padding:16px; flex-direction:column; align-items:flex-start; gap:12px;}
+    .calendar-header-row h3{font-size:22px;}
+    .calendar-nav{width:100%;}
+    .calendar-nav .month-label{min-width:unset; width:100%; text-align:center;}
+    .calendar-content{padding:14px 14px 18px; overflow-x:auto;}
+    .calendar-weekdays,
+    .calendar-grid{width:max-content; min-width:100%; grid-template-columns:repeat(7, minmax(86px, 1fr));}
+    .calendar-weekdays{gap:8px; margin-bottom:10px;}
+    .calendar-weekdays div{font-size:10px; padding:6px 0;}
+    .calendar-grid{gap:8px;}
+    .calendar-day{min-height:102px; border-radius:14px; padding:10px 9px;}
+    .calendar-day .date-top{margin-bottom:10px;}
+    .calendar-day .date-number{font-size:15px;}
+    .calendar-day .task-preview{font-size:9.5px; gap:5px;}
+    .calendar-day .task-preview small{font-size:9px; white-space:normal; line-height:1.35;}
+    .calendar-note-box{padding:14px 15px; border-radius:14px;}
+    .calendar-note-box p{font-size:13px;}
+    .calendar-cta-row{flex-direction:column; gap:10px;}
+    .calendar-cta-row .btn{width:100%; justify-content:center;}
+    .calendar-modal{padding:10px;}
+    .calendar-modal-panel{width:100%; max-height:88vh; overflow:auto; border-radius:18px; padding:16px;}
+    .modal-header h4{font-size:20px;}
+    .modal-focus h5{font-size:17px;}
   }
-  @media (max-width:520px){
-    .calendar-weekdays,.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
-    .calendar-nav{width:100%; justify-content:flex-start;}
-    .calendar-nav .month-label{min-width:unset; flex:1;}
+  @media (max-width:420px){
+    .calendar-weekdays,
+    .calendar-grid{grid-template-columns:repeat(7, minmax(78px, 1fr));}
+    .calendar-day{min-height:96px;}
   }
 
   /* ---------- CLIENT GRIDS ---------- */
