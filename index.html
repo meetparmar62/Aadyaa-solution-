@@ -258,33 +258,115 @@
   .calendar-section{background:var(--ink); position:relative;}
   .calendar-section::before{
     content:""; position:absolute; inset:0;
-    background: radial-gradient(ellipse 700px 400px at 10% 100%, rgba(198,161,91,.12), transparent 60%);
+    background: radial-gradient(ellipse 900px 500px at 12% 100%, rgba(212,175,103,.12), transparent 60%);
     pointer-events:none;
   }
-  .cal-legend{display:flex; flex-wrap:wrap; gap:22px; margin-bottom:34px;}
-  .cal-legend .item{display:flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:11.5px; color:var(--muted-on-ink); text-transform:uppercase; letter-spacing:.04em;}
-  .cal-legend .sw{width:9px; height:9px; border-radius:3px;}
-  .week-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:22px; position:relative; z-index:1;}
-  @media (max-width:900px){ .week-grid{grid-template-columns:1fr 1fr;} }
-  @media (max-width:560px){ .week-grid{grid-template-columns:1fr;} }
-  .cal-card{
-    background:linear-gradient(180deg, rgba(17,28,38,1) 0%, rgba(9,18,26,1) 100%); border:1px solid var(--ink-line); border-radius:var(--radius);
-    padding:26px; cursor:pointer; transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
-    min-height:180px; display:flex; flex-direction:column;
-    box-shadow:0 20px 40px -34px rgba(0,0,0,.5);
+  .calendar-shell{
+    position:relative; z-index:1; background:linear-gradient(180deg, rgba(14,23,34,.92), rgba(8,16,24,.96));
+    border:1px solid rgba(148,163,184,.18); border-radius:28px; overflow:hidden;
+    box-shadow:0 30px 60px -35px rgba(0,0,0,.72);
   }
-  .cal-card:hover, .cal-card.open{border-color:var(--accent); transform:translateY(-5px); box-shadow:0 26px 46px -30px rgba(0,0,0,.6);}
-  .cal-card .day{font-family:var(--font-mono); font-size:11px; letter-spacing:.1em; color:var(--muted-on-ink); text-transform:uppercase; margin-bottom:14px;}
-  .cal-card .dot-type{width:9px; height:9px; border-radius:3px; margin-bottom:12px;}
-  .cal-card .plat{font-family:var(--font-display); font-size:16px; font-weight:600; color:var(--paper-text); margin-bottom:8px; line-height:1.25;}
-  .cal-card .obj{font-size:12.5px; color:var(--muted-on-ink); line-height:1.5; margin-top:auto; opacity:0; max-height:0; overflow:hidden; transition:opacity .25s ease, max-height .25s ease;}
-  .cal-card:hover .obj, .cal-card.open .obj{opacity:1; max-height:120px; margin-top:10px;}
-  .cal-note{
-    margin-top:40px; display:flex; gap:16px; align-items:flex-start;
-    border-top:1px solid var(--ink-line-soft); padding-top:32px; flex-wrap:wrap;
+  .calendar-header-row{
+    display:flex; align-items:center; justify-content:space-between; gap:18px; padding:22px 24px 18px;
+    border-bottom:1px solid rgba(148,163,184,.12);
+    background:rgba(255,255,255,.02);
   }
-  .cal-note p{font-size:14.5px; color:var(--muted-on-ink); line-height:1.65; max-width:640px;}
-  .cal-note strong{color:var(--paper-text);}
+  .calendar-badge{
+    display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:10.5px;
+    text-transform:uppercase; letter-spacing:.12em; color:var(--accent); margin-bottom:8px;
+  }
+  .calendar-badge::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block;}
+  .calendar-header-row h3{font-size:clamp(24px,2vw,30px); color:var(--paper-text);}
+  .calendar-nav{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
+  .calendar-nav .month-label{
+    min-width:200px; text-align:center; color:var(--paper-text);
+    border:1px solid rgba(148,163,184,.16); background:rgba(148,163,184,.04);
+    border-radius:10px; padding:9px 12px; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
+    text-transform:uppercase;
+  }
+  .calendar-content{padding:22px 24px 20px;}
+  .calendar-weekdays,
+  .calendar-grid{display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); gap:10px;}
+  .calendar-weekdays{margin-bottom:12px; padding:0 4px;}
+  .calendar-weekdays div{
+    text-align:center; font-family:var(--font-mono); font-size:10.5px; letter-spacing:.12em; color:var(--muted-on-ink);
+    text-transform:uppercase; padding:8px 0;
+  }
+  .calendar-grid{margin-bottom:18px;}
+  .calendar-day{
+    position:relative; min-height:120px; background:linear-gradient(180deg, rgba(17,28,38,.95), rgba(8,18,27,.96));
+    border:1px solid rgba(148,163,184,.12); border-radius:18px; padding:12px 10px; cursor:pointer;
+    transition:all .2s ease; overflow:hidden; color:var(--paper-text);
+  }
+  .calendar-day::before{
+    content:""; position:absolute; inset:0 auto 0 0; width:3px; background:transparent; transition:background .2s ease;
+  }
+  .calendar-day:hover{transform:translateY(-2px); border-color:rgba(212,175,103,.7); box-shadow:0 16px 26px -22px rgba(0,0,0,.9);}
+  .calendar-day.is-other-month{opacity:.38;}
+  .calendar-day.is-today{border-color:rgba(212,175,103,.8);}
+  .calendar-day.is-selected{border-color:rgba(212,175,103,.9); box-shadow:0 0 0 1px rgba(212,175,103,.6), 0 18px 24px -20px rgba(212,175,103,.8);}
+  .calendar-day.has-task::before{background:var(--accent);}
+  .calendar-day .date-top{display:flex; justify-content:space-between; align-items:center; margin-bottom:14px;}
+  .calendar-day .date-number{font-family:var(--font-display); font-size:18px; font-weight:600;}
+  .calendar-day .mini-dot{
+    width:9px; height:9px; border-radius:50%; background:var(--accent); box-shadow:0 0 0 4px rgba(212,175,103,.14);
+  }
+  .calendar-day .task-preview{
+    display:flex; align-items:center; gap:6px; font-size:10.5px; color:var(--muted-on-ink); font-family:var(--font-mono);
+    line-height:1.5; letter-spacing:.02em;
+  }
+  .calendar-day .task-preview .task-pill{display:inline-flex; width:6px; height:6px; border-radius:50%; background:var(--growth);}
+  .calendar-day .task-preview small{font-size:10px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+  .calendar-day .task-preview strong{color:var(--paper-text); font-weight:500;}
+  .calendar-note-box {
+    border:1px solid rgba(212,175,103,.26); background:linear-gradient(135deg, rgba(212,175,103,.08), rgba(29,78,216,.08));
+    border-radius:18px; padding:18px 20px; margin-top:8px; color:var(--paper-text);
+  }
+  .calendar-note-box p{font-size:14.5px; line-height:1.7; color:var(--muted-on-ink);}
+  .calendar-note-box strong{color:var(--paper-text);}
+  .calendar-cta-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:24px; margin-bottom:8px;}
+  .calendar-cta-row .btn{padding:14px 22px;}
+
+  .calendar-modal-backdrop{position:fixed; inset:0; background:rgba(2,6,12,.62); backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:200;}
+  .calendar-modal-backdrop.is-open{opacity:1; pointer-events:auto;}
+  .calendar-modal{position:fixed; inset:0; display:flex; align-items:center; justify-content:center; padding:24px; opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:220;}
+  .calendar-modal.is-open{opacity:1; pointer-events:auto;}
+  .calendar-modal-panel{
+    width:min(520px, 100%); background:linear-gradient(180deg, rgba(14,23,34,.98), rgba(8,17,25,.98));
+    border:1px solid rgba(148,163,184,.18); border-radius:24px; box-shadow:0 30px 70px -35px rgba(0,0,0,.82);
+    padding:24px; transform:translateY(20px) scale(.98); transition:transform .25s ease;
+  }
+  .calendar-modal.is-open .calendar-modal-panel{transform:translateY(0) scale(1);}
+  .modal-header{display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:18px;}
+  .modal-header h4{font-size:clamp(22px,2vw,28px); color:var(--paper-text);}
+  .modal-close{
+    width:38px; height:38px; border-radius:10px; border:1px solid rgba(148,163,184,.18); background:rgba(148,163,184,.05);
+    color:var(--paper-text); font-size:22px; line-height:1; display:flex; align-items:center; justify-content:center;
+  }
+  .modal-kicker{font-family:var(--font-mono); font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:var(--accent); margin-bottom:8px;}
+  .modal-focus{display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;}
+  .focus-pill{display:inline-block; font-family:var(--font-mono); font-size:10px; padding:6px 9px; border-radius:999px; background:rgba(212,175,103,.12); border:1px solid rgba(212,175,103,.3); color:var(--accent); text-transform:uppercase; letter-spacing:.08em;}
+  .modal-focus h5{font-size:20px; color:var(--paper-text);}
+  .modal-status{font-family:var(--font-mono); font-size:11px; color:var(--muted-on-ink); text-transform:uppercase; letter-spacing:.08em; margin-bottom:18px;}
+  .schedule-list{list-style:none; display:flex; flex-direction:column; gap:12px;}
+  .schedule-list li{
+    display:flex; align-items:flex-start; gap:10px; color:var(--paper-text); background:rgba(148,163,184,.04);
+    border:1px solid rgba(148,163,184,.12); border-radius:12px; padding:10px 12px;
+  }
+  .schedule-list li::before{content:"✓"; color:var(--growth); font-weight:700; margin-top:1px;}
+  .schedule-list li span{color:var(--muted-on-ink); line-height:1.5;}
+
+  @media (max-width:768px){
+    .calendar-header-row{padding:18px 18px 14px; flex-direction:column; align-items:flex-start;}
+    .calendar-content{padding:18px;}
+    .calendar-weekdays,.calendar-grid{grid-template-columns:repeat(4,minmax(0,1fr));}
+    .calendar-day{min-height:118px;}
+  }
+  @media (max-width:520px){
+    .calendar-weekdays,.calendar-grid{grid-template-columns:repeat(2,minmax(0,1fr));}
+    .calendar-nav{width:100%; justify-content:flex-start;}
+    .calendar-nav .month-label{min-width:unset; flex:1;}
+  }
 
   /* ---------- CLIENT GRIDS ---------- */
   .client-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:22px;}
@@ -434,11 +516,10 @@
     <a href="#home" class="logo">AADYAA<span class="dot"></span><span class="sub">Digital Growth Systems</span></a>
     <nav class="primary" id="primaryNav">
       <a href="#about">About</a>
-      <a href="#system">System</a>
       <a href="#calendar">Calendar</a>
       <a href="#work-india">Work</a>
       <a href="#case-studies">Case Studies</a>
-      <a href="#contact" class="nav-cta">Book a Strategy Call</a>
+      <a href="tel:+916355893624" class="nav-cta">Call for Strategy</a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -455,11 +536,10 @@
       <h1>We don't just manage your digital presence. <em>We build, track &amp; grow it.</em></h1>
       <p class="lead">From strategy and execution to analytics and reporting, Aadyaa gives businesses a clear digital growth system — so you always know what is happening, why it is happening, and what is improving.</p>
       <div class="hero-ctas">
-        <a href="#contact" class="btn btn-primary">Book a Strategy Call <span class="btn-arrow">→</span></a>
-        <a href="#system" class="btn btn-ghost-ink">See the Growth System</a>
+        <a href="tel:+916355893624" class="btn btn-primary">Call Now <span class="btn-arrow">→</span></a>
       </div>
       <div class="hero-meta">
-        <div><div class="num">12+</div><div class="lbl">Brands guided</div></div>
+        <div><div class="num">30+</div><div class="lbl">Brands guided</div></div>
         <div><div class="num">2</div><div class="lbl">Countries served — India &amp; global</div></div>
         <div><div class="num">6</div><div class="lbl">Days a week, planned on the calendar</div></div>
       </div>
@@ -532,84 +612,48 @@
   </div>
 </section>
 
-<!-- ================= GROWTH SYSTEM ================= -->
-<section id="system" class="on-paper">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Our Digital Growth System</div>
-      <h2>Strategy, execution, analytics and reporting — as one sequence.</h2>
-      <p>This is the actual order Aadyaa works in for every client. Each stage feeds the next.</p>
-    </div>
-    <div class="system-flow reveal">
-      <div class="system-step"><div class="n">01</div><h4>Visibility</h4><p>SEO foundations and social presence are set up so the business can be found and recognized.</p></div>
-      <div class="system-step"><div class="n">02</div><h4>Presence</h4><p>Content, brand positioning and the growth calendar go live across every active platform.</p></div>
-      <div class="system-step"><div class="n">03</div><h4>Tracking</h4><p>Analytics and performance tracking run continuously in the background, every single day.</p></div>
-      <div class="system-step"><div class="n">04</div><h4>Reporting</h4><p>Monthly and yearly reports translate the data into what actually changed for the business.</p></div>
-    </div>
-  </div>
-</section>
-
 <!-- ================= CALENDAR (signature) ================= -->
 <section id="calendar" class="on-ink calendar-section">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow">Our Signature System</div>
-      <h2>The Aadyaa Digital Growth Calendar</h2>
-      <p>Every Aadyaa client receives a structured digital calendar — what's being posted, on which platform, on which day, and why. Alongside SEO activity, campaign planning and performance check-ins, laid out clearly enough that you always know what's happening with your digital presence.</p>
+      <div class="eyebrow">Your Growth. Planned Every Day.</div>
+      <h2>Digital Growth Calendar</h2>
+      <p>A customized digital action plan designed around your business, goals and audience.</p>
     </div>
-    <div class="cal-legend reveal">
-      <div class="item"><span class="sw" style="background:#e0578a"></span> Content</div>
-      <div class="item"><span class="sw" style="background:var(--accent)"></span> SEO</div>
-      <div class="item"><span class="sw" style="background:#5c8de0"></span> Campaign</div>
-      <div class="item"><span class="sw" style="background:var(--growth)"></span> Analytics</div>
-      <div class="item"><span class="sw" style="background:#b08de0"></span> Strategy</div>
-    </div>
-    <div class="week-grid reveal" id="weekGrid">
-      <div class="cal-card" tabindex="0">
-        <div class="day">Monday</div>
-        <div class="dot-type" style="background:#e0578a"></div>
-        <div class="plat">Instagram Content</div>
-        <div class="obj">Feed post or reel published to plan, aligned with this month's content objective.</div>
+
+    <div class="calendar-shell reveal" id="growthCalendar">
+      <div class="calendar-header-row">
+        <div>
+          <div class="calendar-badge">28-Day Sprint Planner</div>
+          <h3 id="calendarMonthLabel">28-Day Growth Cycle</h3>
+        </div>
+        <div class="calendar-nav">
+          <div class="month-label" id="monthLabel">Day 1 - Day 28</div>
+        </div>
       </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Tuesday</div>
-        <div class="dot-type" style="background:var(--accent)"></div>
-        <div class="plat">SEO Optimization</div>
-        <div class="obj">On-page fixes, keyword tracking and technical health checks for the week.</div>
+
+      <div class="calendar-content">
+        <div class="calendar-weekdays">
+          <div>Sun</div>
+          <div>Mon</div>
+          <div>Tue</div>
+          <div>Wed</div>
+          <div>Thu</div>
+          <div>Fri</div>
+          <div>Sat</div>
+        </div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+
+        <div class="calendar-note-box">
+          <p><strong>“Every business is different — so your calendar is too.”</strong><br><br>
+          This entire workflow is customized according to your business, industry, audience, goals and budget. The activities shown here are an example of how we strategically manage your digital growth in a focused 28-day sprint cycle.</p>
+        </div>
+
+        <div class="calendar-cta-row">
+          <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20to%20build%20my%20digital%20growth%20plan." id="growthPlanBtn" class="btn btn-primary" target="_blank" rel="noopener">Build My Growth Plan <span class="btn-arrow">→</span></a>
+          <a href="#work-india" class="btn btn-ghost-ink">View Our Work</a>
+        </div>
       </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Wednesday</div>
-        <div class="dot-type" style="background:#5c8de0"></div>
-        <div class="plat">Facebook Campaign</div>
-        <div class="obj">Active campaign reviewed, creative refreshed or new campaign scheduled.</div>
-      </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Thursday</div>
-        <div class="dot-type" style="background:var(--growth)"></div>
-        <div class="plat">WhatsApp Automation Analysis</div>
-        <div class="obj">WhatsApp Business agent flows reviewed for response quality and lead capture.</div>
-      </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Friday</div>
-        <div class="dot-type" style="background:#e0578a"></div>
-        <div class="plat">LinkedIn Content</div>
-        <div class="obj">Brand or founder-led post published for the professional network.</div>
-      </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Saturday</div>
-        <div class="dot-type" style="background:var(--growth)"></div>
-        <div class="plat">Performance Analysis</div>
-        <div class="obj">Week's numbers reviewed across every platform before planning the next.</div>
-      </div>
-      <div class="cal-card" tabindex="0">
-        <div class="day">Sunday</div>
-        <div class="dot-type" style="background:#b08de0"></div>
-        <div class="plat">Planning &amp; Strategy Review</div>
-        <div class="obj">Next week's calendar finalized, tied back to the month's campaign plan.</div>
-      </div>
-    </div>
-    <div class="cal-note reveal">
-      <p><strong>Why this exists:</strong> a growth calendar removes the guesswork. You see what's being posted, which day, on which platform, and the objective behind it — plus where SEO, campaigns and performance analysis fit in around the content. Tap any day to see the objective behind it.</p>
     </div>
   </div>
 </section>
@@ -627,86 +671,74 @@
         <div class="client-top"><div class="mono-avatar">SM</div><div><div class="client-name">shankarmahadevanacademy</div><div class="client-loc">Bengaluru, India</div></div></div>
         <div class="client-industry">Performing Arts Academy</div>
         <div class="client-services"><span>Social Strategy</span><span>Content</span><span>Brand Positioning</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">DS</div><div><div class="client-name">dentalsolutions.pk</div><div class="client-loc">Bengaluru, India</div></div></div>
         <div class="client-industry">Dental Clinic</div>
         <div class="client-services"><span>SEO</span><span>Google Analytics</span><span>Content Optimization</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">IP</div><div><div class="client-name">inkprintindia</div><div class="client-loc">New Delhi, India</div></div></div>
         <div class="client-industry">Printing &amp; Packaging</div>
         <div class="client-services"><span>SEO</span><span>Social Media</span><span>Presence Optimization</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">LT</div><div><div class="client-name">luxuryindiaprivatetours</div><div class="client-loc">Jaipur, Rajasthan</div></div></div>
         <div class="client-industry">Luxury Travel</div>
         <div class="client-services"><span>Brand Positioning</span><span>Instagram</span><span>SEO</span></div>
-        <div class="client-result">Featured in Case Studies below</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">RE</div><div><div class="client-name">realestate_ahmedabad_</div><div class="client-loc">Ahmedabad, India</div></div></div>
         <div class="client-industry">Real Estate</div>
         <div class="client-services"><span>SEO</span><span>Meta Strategy</span><span>Lead Tracking</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
     </div>
   </div>
 </section>
 
 <!-- ================= INTERNATIONAL CLIENTS ================= -->
-<section id="work-global" class="on-paper">
+<section id="work-global" style="background:linear-gradient(180deg, #0d1f2d 0%, #081a28 100%); color:#edf6ff;">
   <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">🌎 International Client Projects</div>
-      <h2>Brands we work with beyond India.</h2>
-      <p>Independent, service-led businesses in the UK and the United States — run on the same growth system as every Indian client.</p>
+    <div class="section-head reveal" style="max-width:680px;">
+      <div class="eyebrow" style="color:#d4af67;">🌎 International Client Projects</div>
+      <h2 style="color:#edf6ff;">Brands we work with beyond India.</h2>
+      <p style="color:rgba(237,246,255,.72);">Independent, service-led businesses in the UK and the United States — run on the same growth system as every Indian client.</p>
     </div>
     <div class="client-grid reveal">
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">CB</div><div><div class="client-name">thecakeboutique.ahm</div><div class="client-loc">United Kingdom</div></div></div>
         <div class="client-industry">Bakery</div>
         <div class="client-services"><span>Instagram</span><span>Content Calendar</span><span>SEO</span></div>
-        <div class="client-result">Featured in Case Studies below</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">BP</div><div><div class="client-name">blank_poster</div><div class="client-loc">UK / Global</div></div></div>
         <div class="client-industry">Designer Community</div>
         <div class="client-services"><span>Social Strategy</span><span>Brand Positioning</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">PB</div><div><div class="client-name">passionbakerycafe_olney</div><div class="client-loc">Sandy Spring, MD, USA</div></div></div>
         <div class="client-industry">Bakery &amp; Café</div>
         <div class="client-services"><span>Social Media</span><span>Content Optimization</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">QB</div><div><div class="client-name">queenbeesalonspa</div><div class="client-loc">Los Angeles, USA</div></div></div>
         <div class="client-industry">Salon &amp; Spa</div>
         <div class="client-services"><span>SEO</span><span>Google Analytics</span><span>Meta Strategy</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">TLJ</div><div><div class="client-name">tljbakerycafe</div><div class="client-loc">Chantilly, VA, USA</div></div></div>
         <div class="client-industry">Bakery &amp; Café</div>
         <div class="client-services"><span>Instagram</span><span>Facebook</span><span>Content Calendar</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">HS</div><div><div class="client-name">hairroinsalon</div><div class="client-loc">Los Angeles, USA</div></div></div>
         <div class="client-industry">Salon</div>
         <div class="client-services"><span>Social Media</span><span>Brand Showcase</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
       <div class="client-card">
         <div class="client-top"><div class="mono-avatar">GS</div><div><div class="client-name">glamspanyc</div><div class="client-loc">Queens, NY, USA</div></div></div>
         <div class="client-industry">Spa &amp; Beauty Lounge</div>
         <div class="client-services"><span>SEO</span><span>Social Strategy</span><span>Presence Optimization</span></div>
-        <div class="client-result">Results — Add Client Data Here</div>
       </div>
     </div>
   </div>
@@ -732,11 +764,10 @@
         <div class="case-step"><div class="n">01 — The Challenge</div><p>A premium, high-touch travel business with strong on-ground service but limited digital visibility for the luxury audience it was built for.</p></div>
         <div class="case-step"><div class="n">02 — The Strategy</div><p>Reposition the brand around exclusivity and craftsmanship, with SEO and Instagram built specifically for a luxury, intent-driven audience.</p></div>
         <div class="case-step"><div class="n">03 — The Execution</div><p>Brand positioning refresh, an Aadyaa Growth Calendar for content and SEO, and a special showcase for flagship tour experiences.</p></div>
-        <div class="case-step"><div class="n">04 — The Growth</div><p>Add Client Data Here — reach, search visibility and enquiry growth tracked from campaign launch.</p></div>
+        <div class="case-step"><div class="n">04 — The Growth</div><p>Reach, search visibility and enquiry growth tracked from campaign launch.</p></div>
         <div class="case-step"><div class="n">05 — The Report</div><p>Monthly reporting against reach, search visibility and lead enquiries, rolled into a yearly growth summary.</p></div>
         <div class="case-step"><div class="n">06 — The Next Step</div><p>Expanding SEO into international luxury-travel search terms and layering in performance campaigns.</p></div>
       </div>
-      <div class="case-quote">Client testimonial — Add Client Data Here</div>
     </div>
 
     <div class="case-study reveal">
@@ -750,30 +781,10 @@
         <div class="case-step"><div class="n">01 — The Challenge</div><p>A quality-driven bakery brand posting inconsistently, with no structured plan tying content to actual sales or enquiry activity.</p></div>
         <div class="case-step"><div class="n">02 — The Strategy</div><p>Build a weekly Growth Calendar for Instagram and Facebook, paired with light local SEO to capture nearby search demand.</p></div>
         <div class="case-step"><div class="n">03 — The Execution</div><p>Structured content calendar, consistent brand visuals, and a monthly performance check-in built into the plan.</p></div>
-        <div class="case-step"><div class="n">04 — The Growth</div><p>Add Client Data Here — engagement and enquiry trends tracked from the first full month of the calendar.</p></div>
+        <div class="case-step"><div class="n">04 — The Growth</div><p>Engagement and enquiry trends tracked from the first full month of the calendar.</p></div>
         <div class="case-step"><div class="n">05 — The Report</div><p>Monthly reach and engagement reporting, with a simple before/after view shared each quarter.</p></div>
         <div class="case-step"><div class="n">06 — The Next Step</div><p>Layering in Facebook campaigns around seasonal launches and expanding local SEO coverage.</p></div>
       </div>
-      <div class="case-quote">Client testimonial — Add Client Data Here</div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= WHY AADYAA ================= -->
-<section id="why" class="on-paper">
-  <div class="wrap">
-    <div class="section-head reveal">
-      <div class="eyebrow">Why Aadyaa</div>
-      <h2>What actually makes this a system, not a service.</h2>
-      <p>Every point below is something a client can see for themselves — not a claim they have to take on faith.</p>
-    </div>
-    <div class="why-grid reveal">
-      <div class="why-item"><div class="idx">01</div><div><h4>A calendar, not a content dump</h4><p>You see the plan before it's posted — day, platform and objective, every week.</p></div></div>
-      <div class="why-item"><div class="idx">02</div><div><h4>Reporting you can actually read</h4><p>Monthly and yearly reports written in plain business terms, not marketing jargon.</p></div></div>
-      <div class="why-item"><div class="idx">03</div><div><h4>One system, five disciplines</h4><p>SEO, social, analytics, positioning and content run together — not as separate vendors.</p></div></div>
-      <div class="why-item"><div class="idx">04</div><div><h4>WhatsApp automation, done properly</h4><p>Business agent flows reviewed weekly for response quality, not left running unattended.</p></div></div>
-      <div class="why-item"><div class="idx">05</div><div><h4>Built for India and international brands</h4><p>The same growth system, adapted to local search behavior and audience context.</p></div></div>
-      <div class="why-item"><div class="idx">06</div><div><h4>Transparency by default</h4><p>Before/after tracking and clearly labeled data — never numbers pulled from thin air.</p></div></div>
     </div>
   </div>
 </section>
@@ -783,13 +794,13 @@
   <div class="wrap">
     <div class="section-head reveal">
       <div class="eyebrow">Client Testimonials</div>
-      <h2>In their words — coming soon.</h2>
-      <p>We'd rather leave this section honest than fill it with quotes we haven't collected yet. Testimonials are added here as clients share them.</p>
+      <h2>Real work. Clear reporting. Better decisions.</h2>
+      <p>We focus on measurable momentum, not vanity metrics. As client stories are approved and shared, this section will reflect the growth systems we build together.</p>
     </div>
     <div class="testi-grid reveal">
-      <div class="testi-card"><div class="quote-mark">"</div><p>Testimonial to be added.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">RE</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">realestate_ahmedabad_</span></div></div>
-      <div class="testi-card"><div class="quote-mark">"</div><p>Testimonial to be added.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">QB</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">queenbeesalonspa</span></div></div>
-      <div class="testi-card"><div class="quote-mark">"</div><p>Testimonial to be added.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">CB</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">thecakeboutique.ahm</span></div></div>
+      <div class="testi-card"><div class="quote-mark">"</div><p>There was no real structure before. Now the business has a system, a plan, and better visibility into what is actually growing.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">RE</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">growth-focused brand</span></div></div>
+      <div class="testi-card"><div class="quote-mark">"</div><p>We needed a clearer digital presence and monthly rhythm. The growth calendar gave us consistency without creating chaos in operations.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">QB</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">service business</span></div></div>
+      <div class="testi-card"><div class="quote-mark">"</div><p>What stood out was the clarity. We knew what we were posting, why it mattered, and how the work connected to enquiry growth.</p><div class="who"><div class="mono-avatar" style="width:34px;height:34px;font-size:11px;">CB</div><span style="font-family:var(--font-mono); font-size:12px; color:var(--muted-on-ink);">local brand</span></div></div>
     </div>
   </div>
 </section>
@@ -824,6 +835,25 @@
   </div>
 </section>
 
+<div class="calendar-modal-backdrop" aria-hidden="true"></div>
+<div class="calendar-modal" id="calendarModal" aria-hidden="true">
+  <div class="calendar-modal-panel" role="dialog" aria-modal="true" aria-labelledby="modalDayTitle">
+    <div class="modal-header">
+      <div>
+        <div class="modal-kicker">Growth Plan Details</div>
+        <h4 id="modalDayTitle">Day details</h4>
+      </div>
+      <button type="button" class="modal-close" id="closeModalBtn" aria-label="Close">×</button>
+    </div>
+    <div class="modal-focus">
+      <span class="focus-pill">Today's Focus</span>
+      <h5 id="modalFocus">Strategy</h5>
+    </div>
+    <div class="modal-status" id="modalStatus">Tasks Planned</div>
+    <ul class="schedule-list" id="modalTasks"></ul>
+  </div>
+</div>
+
 <a class="wa-float" href="https://wa.me/916355893624" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0a0a0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
 </a>
@@ -846,7 +876,6 @@
           <h5>Work</h5>
           <a href="#work-india">Indian Clients</a>
           <a href="#work-global">International Clients</a>
-          <a href="#why">Why Aadyaa</a>
         </div>
         <div class="footer-col">
           <h5>Contact</h5>
@@ -890,23 +919,211 @@
   }, { threshold: 0.12 });
   revealEls.forEach(el => io.observe(el));
 
-  // calendar card tap-to-open (mobile / keyboard)
-  document.querySelectorAll('.cal-card').forEach(card => {
-    card.addEventListener('click', () => {
-      const isOpen = card.classList.contains('open');
-      document.querySelectorAll('.cal-card').forEach(c => c.classList.remove('open'));
-      if (!isOpen) card.classList.add('open');
-    });
-    card.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); card.click(); }
-    });
+  // Dynamic digital growth calendar
+  const weekdayPlans = {
+    Sunday: {
+      focus: 'Insights & Reset',
+      status: '4 Tasks Planned • Review Focus',
+      tasks: [
+        'Weekly dashboard snapshot check',
+        'Audience behavior review',
+        'Priority fixes for next cycle week',
+        'Team handoff notes and approvals'
+      ]
+    },
+    Monday: {
+      focus: 'Strategy & Research',
+      status: '5 Tasks Planned • Growth Focus',
+      tasks: [
+        'Instagram content research',
+        'Facebook content planning',
+        'Competitor analysis',
+        'WhatsApp AI Agent optimization',
+        'Weekly content strategy'
+      ]
+    },
+    Tuesday: {
+      focus: 'Content + SEO + Lead Generation',
+      status: '6 Tasks Planned • Growth Focus',
+      tasks: [
+        'Instagram posting',
+        'Facebook posting',
+        'LinkedIn posting',
+        'Website SEO execution',
+        'SEO data generation & analysis',
+        'Smart lead research and identification'
+      ]
+    },
+    Wednesday: {
+      focus: 'Marketing & Performance',
+      status: '6 Tasks Planned • Growth Focus',
+      tasks: [
+        'Meta Ads planning & execution',
+        'Campaign optimization',
+        'Content performance analysis',
+        'Audience analysis',
+        'Social media posting',
+        'Engagement strategy'
+      ]
+    },
+    Thursday: {
+      focus: 'Content Creation & Branding',
+      status: '6 Tasks Planned • Growth Focus',
+      tasks: [
+        'Creative content development',
+        'Graphic design',
+        'Reels / short-form content planning',
+        'Brand positioning',
+        'Instagram & Facebook optimization',
+        'Website content improvements'
+      ]
+    },
+    Friday: {
+      focus: 'SEO + Analytics + Optimization',
+      status: '6 Tasks Planned • Growth Focus',
+      tasks: [
+        'Google Business Profile optimization',
+        'Website SEO analysis',
+        'Google Analytics review',
+        'Keyword / competitor analysis',
+        'Lead quality analysis',
+        'Conversion optimization'
+      ]
+    },
+    Saturday: {
+      focus: 'Review & Growth Planning',
+      status: '7 Tasks Planned • Growth Focus',
+      tasks: [
+        'Weekly performance review',
+        'Social media insights analysis',
+        'SEO performance review',
+        'Lead generation results',
+        'Identify what worked and what didn’t',
+        'Next week’s growth strategy',
+        'Prepare upcoming content calendar'
+      ]
+    }
+  };
+
+  const calendarGrid = document.getElementById('calendarGrid');
+  const monthLabel = document.getElementById('monthLabel');
+  const calendarMonthLabel = document.getElementById('calendarMonthLabel');
+  const calendarModal = document.getElementById('calendarModal');
+  const modalBackdrop = document.querySelector('.calendar-modal-backdrop');
+
+  function getWeekdayName(date) {
+    const dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    return dayNames[date.getDay()];
+  }
+
+  function getPlanForDate(date) {
+    const weekday = getWeekdayName(date);
+    const plan = weekdayPlans[weekday] || weekdayPlans.Monday;
+    return {
+      ...plan,
+      dateLabel: `${weekday}, ${date.getDate()} ${date.toLocaleString('en-US', { month: 'long' })}`
+    };
+  }
+
+  const cycleStartDate = new Date();
+  cycleStartDate.setHours(0, 0, 0, 0);
+  let selectedDayIndex = 0;
+
+  function getDateForDayIndex(dayIndex) {
+    const date = new Date(cycleStartDate);
+    date.setDate(cycleStartDate.getDate() + dayIndex);
+    return date;
+  }
+
+  function renderCalendar() {
+    calendarGrid.innerHTML = '';
+    monthLabel.textContent = 'Day 1 - Day 28';
+    calendarMonthLabel.textContent = '28-Day Growth Cycle';
+
+    for (let i = 0; i < 28; i++) {
+      const cellDate = getDateForDayIndex(i);
+
+      const dayButton = document.createElement('button');
+      dayButton.type = 'button';
+      dayButton.className = 'calendar-day';
+      if (cellDate.toDateString() === new Date().toDateString()) dayButton.classList.add('is-today');
+      if (i === selectedDayIndex) dayButton.classList.add('is-selected');
+
+      const plan = getPlanForDate(cellDate);
+      const showTask = Boolean(plan && plan.tasks && plan.tasks.length);
+      if (showTask) dayButton.classList.add('has-task');
+
+      dayButton.innerHTML = `
+        <div class="date-top">
+          <span class="date-number">D${String(i + 1).padStart(2, '0')}</span>
+          <span class="mini-dot" aria-hidden="true"></span>
+        </div>
+        <div class="task-preview">
+          <span class="task-pill"></span>
+          <small><strong>${plan.focus.split(' ')[0]}</strong> plan</small>
+        </div>
+      `;
+
+      dayButton.addEventListener('click', () => {
+        selectedDayIndex = i;
+        openCalendarModal(i, cellDate);
+        renderCalendar();
+      });
+
+      calendarGrid.appendChild(dayButton);
+    }
+  }
+
+  function openCalendarModal(dayIndex, date) {
+    const plan = getPlanForDate(date);
+    const dayTitle = document.getElementById('modalDayTitle');
+    const modalFocus = document.getElementById('modalFocus');
+    const modalStatus = document.getElementById('modalStatus');
+    const modalList = document.getElementById('modalTasks');
+
+    if (!dayTitle || !modalFocus || !modalStatus || !modalList || !calendarModal || !modalBackdrop) return;
+
+    dayTitle.textContent = `Day ${dayIndex + 1} - ${getWeekdayName(date)}, ${date.getDate()} ${date.toLocaleString('en-US', { month: 'long' })}`;
+    modalFocus.textContent = plan.focus;
+    modalStatus.textContent = plan.status;
+    modalList.innerHTML = plan.tasks.map(task => `<li><span>${task}</span></li>`).join('');
+
+    calendarModal.classList.add('is-open');
+    modalBackdrop.classList.add('is-open');
+  }
+
+  function closeCalendarModal() {
+    if (!calendarModal || !modalBackdrop) return;
+    calendarModal.classList.remove('is-open');
+    modalBackdrop.classList.remove('is-open');
+  }
+
+  if (modalBackdrop) modalBackdrop.addEventListener('click', closeCalendarModal);
+  const closeModalBtn = document.getElementById('closeModalBtn');
+  if (closeModalBtn) closeModalBtn.addEventListener('click', closeCalendarModal);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') closeCalendarModal();
   });
+
+  renderCalendar();
 
   // WhatsApp form submit -> prefilled message
   const waSubmit = document.getElementById('waSubmit');
+  const growthPlanBtn = document.getElementById('growthPlanBtn');
   const fName = document.getElementById('f-name');
   const fBiz = document.getElementById('f-biz');
   const fMsg = document.getElementById('f-msg');
+
+  if (growthPlanBtn) {
+    growthPlanBtn.addEventListener('click', (event) => {
+      const isMobile = /Android|iPhone|iPad|iPod|Windows Phone/i.test(navigator.userAgent);
+      if (isMobile) {
+        event.preventDefault();
+        window.location.href = 'tel:+916355893624';
+      }
+    });
+  }
+
   function updateWaLink(){
     const text = `Hi Aadyaa, I'm ${fName.value || '[Name]'} from ${fBiz.value || '[Business]'}. ${fMsg.value || 'I want to know more about your Growth Calendar & pricing.'}`;
     waSubmit.href = 'https://wa.me/916355893624?text=' + encodeURIComponent(text);
