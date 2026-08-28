@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Aadyaa Growth Add-ons</title>
+<meta name="description" content="Review optional Aadyaa digital growth add-ons before starting your selected package.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--ink:#071827;--ink-soft:#10283a;--paper:#f4f7fb;--white:#fff;--text:#edf6ff;--muted:rgba(237,246,255,.72);--accent:#d4af67;--green:#1fa67a;--line:rgba(148,163,184,.2);--display:'Space Grotesk',sans-serif;--body:'Inter',sans-serif;--mono:'JetBrains Mono',monospace}
+  *{box-sizing:border-box;margin:0;padding:0} html{scroll-behavior:smooth} body{min-height:100vh;background:radial-gradient(ellipse 700px 420px at 80% 0%,rgba(31,166,122,.14),transparent 65%),linear-gradient(135deg,#061521 0%,var(--ink) 48%,#10283a 100%);color:var(--text);font-family:var(--body);line-height:1.5} a{color:inherit;text-decoration:none} button{font:inherit;cursor:pointer;border:0}.wrap{width:min(760px,100% - 40px);margin:0 auto;padding:70px 0 52px}.back{display:inline-flex;align-items:center;gap:8px;color:var(--muted);font:12px var(--mono);letter-spacing:.04em;margin-bottom:54px}.back:hover{color:var(--accent)}.eyebrow{display:inline-flex;gap:9px;align-items:center;color:var(--accent);font:11px var(--mono);letter-spacing:.14em;text-transform:uppercase;margin-bottom:18px}.eyebrow:before{content:"";width:7px;height:7px;background:var(--green);border-radius:50%;box-shadow:0 0 0 4px rgba(31,166,122,.14)}h1,h2,h3{font-family:var(--display);line-height:1.05}h1{font-size:clamp(38px,7vw,64px);max-width:650px;margin-bottom:18px}h1 em{font-style:normal;color:var(--accent)}.intro{color:var(--muted);font-size:17px;line-height:1.7;max-width:620px;margin-bottom:38px}.selected-plan{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:17px 20px;border:1px solid rgba(212,175,103,.38);border-radius:14px;background:rgba(212,175,103,.1);margin-bottom:28px}.selected-plan span{color:var(--muted);font:11px var(--mono);text-transform:uppercase;letter-spacing:.1em}.selected-plan strong{color:var(--accent);font:600 20px var(--display)}.panel{background:linear-gradient(180deg,rgba(18,39,54,.96),rgba(8,20,30,.98));border:1px solid var(--line);border-radius:22px;padding:28px;box-shadow:0 30px 70px -42px rgba(0,0,0,.8)}.panel h2{font-size:26px;margin-bottom:8px}.panel-copy{color:var(--muted);font-size:14px;margin-bottom:22px}.checklist{display:grid;gap:11px}.addon{display:block;cursor:pointer}.addon input{position:absolute;opacity:0;pointer-events:none}.addon-body{display:flex;align-items:flex-start;gap:14px;padding:16px;border:1px solid var(--line);border-radius:13px;background:rgba(255,255,255,.035);transition:border-color .2s,background .2s}.addon-body:before{content:"";width:20px;height:20px;flex:0 0 20px;border:1px solid rgba(237,246,255,.42);border-radius:5px;margin-top:1px}.addon input:checked + .addon-body{border-color:rgba(212,175,103,.72);background:rgba(212,175,103,.1)}.addon input:checked + .addon-body:before{content:"✓";display:flex;align-items:center;justify-content:center;background:var(--accent);border-color:var(--accent);color:var(--ink);font-weight:700;font-size:14px}.addon-title{display:block;font-weight:600;margin-bottom:3px}.addon-copy{display:block;color:var(--muted);font-size:12.5px}.addon-note{display:none;margin:9px 0 2px 34px;padding:10px 12px;border-left:2px solid var(--accent);color:#f3e7c6;background:rgba(212,175,103,.08);font-size:12px;line-height:1.5}.addon input:checked ~ .addon-note{display:block}.addon-note strong{color:var(--accent)}.summary{display:flex;justify-content:space-between;gap:14px;align-items:center;margin-top:24px;padding-top:20px;border-top:1px solid var(--line);color:var(--muted);font-size:13px}.summary strong{color:var(--green);font:600 13px var(--mono)}.actions{display:flex;gap:12px;flex-wrap:wrap;margin-top:24px}.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;padding:14px 20px;border-radius:999px;font:600 12px var(--mono);letter-spacing:.03em}.primary{color:var(--ink);background:linear-gradient(135deg,var(--accent),#f2d599)}.secondary{border:1px solid var(--line);color:var(--text)}.secondary:hover{border-color:var(--accent);color:var(--accent)}.primary:hover{filter:brightness(1.06)}.footnote{color:var(--muted);font-size:12px;text-align:center;margin-top:18px}@media(max-width:560px){.wrap{padding-top:34px}.back{margin-bottom:40px}.panel{padding:20px}.selected-plan{align-items:flex-start;flex-direction:column}.actions{flex-direction:column}.actions .btn{width:100%}}
+</style>
+</head>
+<body>
+<main class="wrap">
+  <a class="back" href="index.html">← Back to Aadyaa</a>
+  <div class="eyebrow">Build your growth plan</div>
+  <h1>Choose what you want to add <em>next.</em></h1>
+  <p class="intro">Your selected package gives you the core system. Use this checklist to tell us about any additional support you may need, and we will confirm the scope and pricing with you.</p>
+  <div class="selected-plan"><span>Selected package</span><strong id="planName">Growth package</strong></div>
+  <section class="panel" aria-labelledby="addon-heading">
+    <h2 id="addon-heading">Optional add-ons</h2>
+    <p class="panel-copy">Tick any item you would like to discuss. Every selected item will show a clear note below it.</p>
+    <div class="checklist">
+      <label class="addon"><input type="checkbox" value="Meta Ads addition"><span class="addon-body"><span><span class="addon-title">Meta Ads addition</span><span class="addon-copy">Campaign setup, audience targeting and ongoing ad optimization.</span></span></span><span class="addon-note"><strong>Not included in the selected package.</strong> Meta Ads management and ad spend will be charged separately.</span></label>
+      <label class="addon"><input type="checkbox" value="Extra reels and video editing"><span class="addon-body"><span><span class="addon-title">Extra reels and video editing</span><span class="addon-copy">Additional short-form videos beyond the package limit.</span></span></span><span class="addon-note"><strong>Not included in the selected package.</strong> Extra creative production will carry an additional charge.</span></label>
+      <label class="addon"><input type="checkbox" value="Landing page or website updates"><span class="addon-body"><span><span class="addon-title">Landing page or website updates</span><span class="addon-copy">New landing pages, copy changes or conversion-focused improvements.</span></span></span><span class="addon-note"><strong>Not included in the selected package.</strong> Website development work will be quoted separately.</span></label>
+      <label class="addon"><input type="checkbox" value="WhatsApp automation setup"><span class="addon-body"><span><span class="addon-title">WhatsApp automation setup</span><span class="addon-copy">Automated replies, lead routing and WhatsApp Business workflows.</span></span></span><span class="addon-note"><strong>Not included in the selected package.</strong> Automation setup and any third-party tools will be charged separately.</span></label>
+      <label class="addon"><input type="checkbox" value="Influencer or creator collaboration"><span class="addon-body"><span><span class="addon-title">Influencer or creator collaboration</span><span class="addon-copy">Research, outreach and coordination for a creator campaign.</span></span></span><span class="addon-note"><strong>Not included in the selected package.</strong> Creator fees and campaign coordination will be priced separately.</span></label>
+    </div>
+    <div class="summary"><span id="selectionLabel">No add-ons selected</span><strong>Scope confirmed before billing</strong></div>
+    <div class="actions"><a class="btn primary" id="continueWhatsApp" href="https://wa.me/916355893624">Discuss selected add-ons →</a><a class="btn secondary" href="index.html#special-offers">Compare packages</a></div>
+    <p class="footnote">Add-ons are optional. We will share the exact extra cost before any work begins.</p>
+  </section>
+</main>
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const plan = params.get('plan') === 'social' ? 'Social Visibility Sprint · ₹8,999' : params.get('plan') === 'plus' ? 'Presence & Analytics Boost · ₹9,999' : 'Growth package';
+  document.getElementById('planName').textContent = plan;
+  const boxes = [...document.querySelectorAll('.addon input')];
+  const selectionLabel = document.getElementById('selectionLabel');
+  const continueWhatsApp = document.getElementById('continueWhatsApp');
+  function updateSelection() {
+    const selected = boxes.filter(box => box.checked).map(box => box.value);
+    selectionLabel.textContent = selected.length ? `${selected.length} add-on${selected.length === 1 ? '' : 's'} selected` : 'No add-ons selected';
+    const message = `Hi Aadyaa, I want the ${plan}. ${selected.length ? `Please discuss these optional add-ons: ${selected.join(', ')}.` : 'I would like to discuss the package.'}`;
+    continueWhatsApp.href = `https://wa.me/916355893624?text=${encodeURIComponent(message)}`;
+  }
+  boxes.forEach(box => box.addEventListener('change', updateSelection));
+  updateSelection();
+</script>
+</body>
+</html>
