@@ -141,20 +141,49 @@
     box-shadow:0 10px 25px -15px rgba(212,175,103,.9);
   }
   .nav-cta:hover{background:linear-gradient(135deg, #f2d599 0%, var(--accent) 100%); transform:translateY(-1px);}
-  .nav-toggle{display:none; flex-direction:column; gap:5px; width:26px;}
-  .nav-toggle span{height:2px; background:var(--paper-text); border-radius:2px;}
+  .nav-toggle{
+    display:none; width:44px; height:44px; flex-direction:column; align-items:center; justify-content:center; gap:5px;
+    border:1px solid rgba(148,163,184,.22); border-radius:10px; background:rgba(148,163,184,.06);
+    position:relative; z-index:102; transition:background .25s ease, border-color .25s ease;
+  }
+  .nav-toggle span{width:22px; height:2px; background:var(--paper-text); border-radius:2px; transition:transform .25s ease, opacity .2s ease;}
+  .nav-toggle.open{background:rgba(212,175,103,.14); border-color:rgba(212,175,103,.55);}
+  .nav-toggle.open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+  .nav-toggle.open span:nth-child(2){opacity:0;}
+  .nav-toggle.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
   @media (max-width:920px){
+    header.site-nav{background:rgba(7,24,39,.96); box-shadow:0 12px 28px -22px rgba(0,0,0,.9);}
+    .nav-inner{height:68px; padding:0 18px;}
+    .logo{font-size:18px;}
+    .logo .sub{display:none;}
     nav.primary{
-      position:fixed; top:72px; left:0; right:0; bottom:0;
-      background:var(--ink); flex-direction:column; padding:32px 28px;
-      transform:translateX(100%); transition:transform .35s ease;
-      gap:0; overflow-y:auto;
+      position:fixed; top:68px; left:0; right:0; bottom:0; z-index:101;
+      background:linear-gradient(180deg, #0b2233 0%, var(--ink) 42%, #06131f 100%);
+      flex-direction:column; padding:22px 20px 36px;
+      height:calc(100vh - 68px); max-height:calc(100vh - 68px);
+      transform:translateX(100%); visibility:hidden; opacity:0;
+      transition:transform .35s ease, opacity .25s ease, visibility 0s linear .35s;
+      gap:0; overflow-y:auto; overscroll-behavior:contain; counter-reset:mobile-nav;
     }
-    nav.primary.open{transform:translateX(0);}
-    nav.primary a{padding:16px 0; border-bottom:1px solid var(--ink-line-soft); font-size:16px;}
-    .nav-cta{margin-top:20px; justify-content:center;}
+    nav.primary.open{transform:translateX(0); visibility:visible; opacity:1; transition-delay:0s;}
+    nav.primary a:not(.nav-cta){
+      min-height:58px; padding:14px 8px; border-bottom:1px solid var(--ink-line-soft); font-size:20px;
+      font-family:var(--font-display); color:var(--paper-text); letter-spacing:0; opacity:0; transform:translateX(14px);
+      transition:color .2s ease, opacity .3s ease, transform .3s ease;
+    }
+    nav.primary a:not(.nav-cta)::before{
+      counter-increment:mobile-nav; content:'0' counter(mobile-nav); width:34px; margin-right:14px;
+      font-family:var(--font-mono); font-size:10px; color:var(--accent); letter-spacing:.08em;
+    }
+    nav.primary.open a:not(.nav-cta){opacity:1; transform:translateX(0);}
+    nav.primary.open a:nth-child(1){transition-delay:.08s;}
+    nav.primary.open a:nth-child(2){transition-delay:.13s;}
+    nav.primary.open a:nth-child(3){transition-delay:.18s;}
+    nav.primary.open a:nth-child(4){transition-delay:.23s;}
+    .nav-cta{margin-top:auto; min-height:54px; justify-content:center; font-size:12px; box-shadow:0 16px 30px -18px rgba(212,175,103,.95);}
     .nav-toggle{display:flex;}
   }
+  body.menu-open{overflow:hidden;}
 
   /* ---------- BUTTONS ---------- */
   .btn{
@@ -218,6 +247,11 @@
   @keyframes pulse{0%,100%{opacity:1;} 50%{opacity:.35;}}
 
   /* ---------- ABOUT ---------- */
+  #about{
+    margin:0 18px; border-radius:56px; overflow:hidden;
+    background:linear-gradient(135deg, #f8fafc 0%, var(--paper) 56%, #e8eef7 100%);
+    box-shadow:0 24px 60px -42px rgba(7,24,39,.55);
+  }
   .about-grid{display:grid; grid-template-columns:.95fr 1.05fr; gap:70px; align-items:start;}
   @media (max-width:900px){ .about-grid{grid-template-columns:1fr; gap:40px;} }
   .about-grid h2{font-size:clamp(28px,3.6vw,42px); margin-bottom:22px;}
@@ -228,6 +262,9 @@
   .about-pillars .pillar .n{font-family:var(--font-mono); color:var(--accent-strong); font-size:12px; margin-bottom:10px;}
   .about-pillars .pillar h4{font-size:16.5px; margin-bottom:8px;}
   .about-pillars .pillar p{font-size:13.5px; color:var(--muted-on-paper); line-height:1.55;}
+  @media (max-width:768px){
+    #about{margin:0 10px; border-radius:28px;}
+  }
 
   /* ---------- SERVICES ---------- */
   .services-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--ink-line); border:1px solid var(--ink-line); border-radius:var(--radius); overflow:hidden; box-shadow:var(--shadow-soft);}
@@ -265,7 +302,14 @@
   .system-step p{font-size:14px; color:var(--muted-on-paper); line-height:1.6;}
 
   /* ---------- CALENDAR (signature) ---------- */
-  .calendar-section{background:var(--ink); position:relative;}
+  .calendar-section{
+    background:
+      linear-gradient(rgba(148,163,184,.045) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(148,163,184,.045) 1px, transparent 1px),
+      radial-gradient(ellipse 760px 520px at 88% 10%, rgba(31,166,122,.12), transparent 62%),
+      var(--ink);
+    background-size:56px 56px, 56px 56px, auto, auto; position:relative; overflow:hidden;
+  }
   .calendar-section::before{
     content:""; position:absolute; inset:0;
     background: radial-gradient(ellipse 900px 500px at 12% 100%, rgba(212,175,103,.12), transparent 60%);
@@ -273,26 +317,31 @@
   }
   .calendar-shell{
     position:relative; z-index:1; background:linear-gradient(180deg, rgba(14,23,34,.92), rgba(8,16,24,.96));
-    border:1px solid rgba(148,163,184,.18); border-radius:28px; overflow:hidden;
-    box-shadow:0 30px 60px -35px rgba(0,0,0,.72);
+    border:1px solid rgba(212,175,103,.24); border-radius:32px; overflow:hidden;
+    box-shadow:0 34px 80px -38px rgba(0,0,0,.86), 0 0 0 1px rgba(255,255,255,.025) inset;
+  }
+  .calendar-shell::before{
+    content:""; position:absolute; top:0; left:8%; right:8%; height:2px;
+    background:linear-gradient(90deg, transparent, var(--accent), var(--growth), transparent);
+    box-shadow:0 0 24px rgba(212,175,103,.5); opacity:.9;
   }
   .calendar-header-row{
     display:flex; align-items:center; justify-content:space-between; gap:18px; padding:22px 24px 18px;
     border-bottom:1px solid rgba(148,163,184,.12);
-    background:rgba(255,255,255,.02);
+    background:linear-gradient(100deg, rgba(255,255,255,.055), rgba(255,255,255,.015));
   }
   .calendar-badge{
     display:inline-flex; align-items:center; gap:8px; font-family:var(--font-mono); font-size:10.5px;
     text-transform:uppercase; letter-spacing:.12em; color:var(--accent); margin-bottom:8px;
   }
-  .calendar-badge::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--accent); display:inline-block;}
+  .calendar-badge::before{content:""; width:7px; height:7px; border-radius:50%; background:var(--growth); display:inline-block; box-shadow:0 0 0 4px rgba(31,166,122,.13), 0 0 12px rgba(31,166,122,.75); animation:pulse 2.2s ease-in-out infinite;}
   .calendar-header-row h3{font-size:clamp(24px,2vw,30px); color:var(--paper-text);}
   .calendar-nav{display:flex; align-items:center; gap:10px; flex-wrap:wrap;}
   .calendar-nav .month-label{
     min-width:200px; text-align:center; color:var(--paper-text);
-    border:1px solid rgba(148,163,184,.16); background:rgba(148,163,184,.04);
+    border:1px solid rgba(212,175,103,.3); background:rgba(212,175,103,.08);
     border-radius:10px; padding:9px 12px; font-family:var(--font-mono); font-size:11px; letter-spacing:.08em;
-    text-transform:uppercase;
+    text-transform:uppercase; box-shadow:0 10px 24px -20px rgba(212,175,103,.85);
   }
   .calendar-content{padding:22px 24px 20px;}
   .calendar-weekdays,
@@ -303,15 +352,21 @@
     text-transform:uppercase; padding:8px 0;
   }
   .calendar-grid{margin-bottom:18px;}
+  .calendar-grid.is-changing{pointer-events:none;}
   .calendar-day{
-    position:relative; min-height:120px; background:linear-gradient(180deg, rgba(17,28,38,.95), rgba(8,18,27,.96));
-    border:1px solid rgba(148,163,184,.12); border-radius:18px; padding:12px 10px; cursor:pointer;
-    transition:all .2s ease; overflow:hidden; color:var(--paper-text);
+    position:relative; min-height:120px; background:linear-gradient(145deg, rgba(22,37,48,.96), rgba(8,18,27,.98));
+    border:1px solid rgba(148,163,184,.16); border-radius:16px; padding:12px 10px; cursor:pointer;
+    transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease, background .25s ease;
+    overflow:hidden; color:var(--paper-text); animation:calendar-day-in .5s both;
+    animation-delay:calc(var(--day-index) * 22ms);
   }
+  .calendar-day:nth-child(4n+2){background:linear-gradient(145deg, rgba(16,39,45,.96), rgba(8,18,27,.98));}
+  @keyframes calendar-day-in{from{opacity:0; transform:translateY(12px) scale(.98);}to{opacity:1; transform:translateY(0) scale(1);}}
   .calendar-day::before{
     content:""; position:absolute; inset:0 auto 0 0; width:3px; background:transparent; transition:background .2s ease;
   }
-  .calendar-day:hover{transform:translateY(-2px); border-color:rgba(212,175,103,.7); box-shadow:0 16px 26px -22px rgba(0,0,0,.9);}
+  .calendar-day:hover{transform:translateY(-4px) scale(1.015); border-color:rgba(212,175,103,.72); background:linear-gradient(145deg, rgba(35,49,56,.98), rgba(10,23,31,.98)); box-shadow:0 18px 30px -22px rgba(0,0,0,.95), 0 0 0 1px rgba(212,175,103,.12) inset;}
+  .calendar-day:focus-visible{outline:2px solid var(--accent); outline-offset:3px;}
   .calendar-day.is-other-month{opacity:.38;}
   .calendar-day.is-today{border-color:rgba(212,175,103,.8);}
   .calendar-day.is-selected{border-color:rgba(212,175,103,.9); box-shadow:0 0 0 1px rgba(212,175,103,.6), 0 18px 24px -20px rgba(212,175,103,.8);}
@@ -329,13 +384,51 @@
   .calendar-day .task-preview small{font-size:10px; display:block; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
   .calendar-day .task-preview strong{color:var(--paper-text); font-weight:500;}
   .calendar-note-box {
-    border:1px solid rgba(212,175,103,.26); background:linear-gradient(135deg, rgba(212,175,103,.08), rgba(29,78,216,.08));
-    border-radius:18px; padding:18px 20px; margin-top:8px; color:var(--paper-text);
+    border:1px solid rgba(212,175,103,.32); background:linear-gradient(135deg, rgba(212,175,103,.12), rgba(31,166,122,.06));
+    border-radius:18px; padding:20px 22px; margin-top:8px; color:var(--paper-text); box-shadow:0 18px 35px -30px rgba(0,0,0,.9);
   }
   .calendar-note-box p{font-size:14.5px; line-height:1.7; color:var(--muted-on-ink);}
   .calendar-note-box strong{color:var(--paper-text);}
   .calendar-cta-row{display:flex; gap:16px; flex-wrap:wrap; margin-top:24px; margin-bottom:8px;}
   .calendar-cta-row .btn{padding:14px 22px;}
+
+  /* ---------- SPECIAL OFFERS ---------- */
+  .offers-section{
+    background:
+      radial-gradient(ellipse 700px 420px at 8% 12%, rgba(212,175,103,.12), transparent 62%),
+      linear-gradient(180deg, #101f2d 0%, #071827 100%);
+    color:var(--paper-text); overflow:hidden;
+  }
+  .offers-section .section-head{position:relative; z-index:1;}
+  .offers-section .section-head p{color:var(--muted-on-ink);}
+  .offer-grid{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:22px; position:relative; z-index:1;}
+  .offer-card{
+    position:relative; display:flex; flex-direction:column; min-height:100%; padding:30px;
+    background:linear-gradient(145deg, rgba(24,43,55,.96), rgba(7,20,30,.98));
+    border:1px solid rgba(148,163,184,.2); border-radius:22px; overflow:hidden;
+    box-shadow:0 28px 60px -38px rgba(0,0,0,.9); transition:transform .25s ease, border-color .25s ease, box-shadow .25s ease;
+  }
+  .offer-card::before{content:""; position:absolute; inset:0 0 auto; height:3px; background:linear-gradient(90deg, var(--accent), var(--growth));}
+  .offer-card:hover{transform:translateY(-6px); border-color:rgba(212,175,103,.58); box-shadow:0 32px 66px -36px rgba(0,0,0,.95);}
+  .offer-card.featured{background:linear-gradient(145deg, rgba(39,53,55,.98), rgba(8,24,28,.98)); border-color:rgba(212,175,103,.48);}
+  .offer-ribbon{position:absolute; top:18px; right:18px; padding:6px 10px; border:1px solid rgba(31,166,122,.45); border-radius:999px; color:#8de2c2; background:rgba(31,166,122,.1); font-family:var(--font-mono); font-size:10px; letter-spacing:.1em; text-transform:uppercase;}
+  .offer-kicker{font-family:var(--font-mono); color:var(--accent); font-size:11px; letter-spacing:.14em; text-transform:uppercase; margin-bottom:12px;}
+  .offer-card h3{font-size:clamp(25px,3vw,34px); margin-bottom:10px; color:var(--paper-text); max-width:390px;}
+  .offer-card > p{color:var(--muted-on-ink); font-size:14px; line-height:1.65; max-width:430px; margin-bottom:24px;}
+  .offer-price{display:flex; align-items:baseline; gap:12px; padding:16px 0 20px; border-top:1px solid rgba(148,163,184,.14); border-bottom:1px solid rgba(148,163,184,.14);}
+  .offer-price del{color:rgba(237,246,255,.48); font-family:var(--font-mono); font-size:14px;}
+  .offer-price strong{font-family:var(--font-display); color:var(--accent); font-size:36px; line-height:1;}
+  .offer-price span{color:var(--muted-on-ink); font-family:var(--font-mono); font-size:11px;}
+  .offer-features{display:flex; flex-direction:column; gap:12px; margin:22px 0 28px;}
+  .offer-features li{display:flex; align-items:flex-start; gap:10px; color:var(--paper-text); font-size:14px; line-height:1.45;}
+  .offer-features li::before{content:"✓"; flex:0 0 auto; color:var(--growth); font-weight:700;}
+  .offer-card .btn{margin-top:auto; align-self:flex-start;}
+  @media (max-width:760px){
+    .offer-grid{grid-template-columns:1fr; gap:16px;}
+    .offer-card{padding:24px;}
+    .offer-card:hover{transform:none;}
+    .offer-card .btn{width:100%; justify-content:center;}
+  }
 
   .calendar-modal-backdrop{position:fixed; inset:0; background:rgba(2,6,12,.62); backdrop-filter:blur(8px); opacity:0; pointer-events:none; transition:opacity .25s ease; z-index:200;}
   .calendar-modal-backdrop.is-open{opacity:1; pointer-events:auto;}
@@ -372,13 +465,10 @@
     .calendar-header-row h3{font-size:22px;}
     .calendar-nav{width:100%;}
     .calendar-nav .month-label{min-width:unset; width:100%; text-align:center;}
-    .calendar-content{padding:14px 14px 18px; overflow-x:auto;}
-    .calendar-weekdays,
-    .calendar-grid{width:max-content; min-width:100%; grid-template-columns:repeat(7, minmax(86px, 1fr));}
-    .calendar-weekdays{gap:8px; margin-bottom:10px;}
-    .calendar-weekdays div{font-size:10px; padding:6px 0;}
-    .calendar-grid{gap:8px;}
-    .calendar-day{min-height:102px; border-radius:14px; padding:10px 9px;}
+    .calendar-content{padding:14px 14px 18px;}
+    .calendar-weekdays{display:none;}
+    .calendar-grid{grid-template-columns:repeat(2, minmax(0, 1fr)); gap:9px;}
+    .calendar-day{min-height:92px; border-radius:14px; padding:10px 9px;}
     .calendar-day .date-top{margin-bottom:10px;}
     .calendar-day .date-number{font-size:15px;}
     .calendar-day .task-preview{font-size:9.5px; gap:5px;}
@@ -387,15 +477,19 @@
     .calendar-note-box p{font-size:13px;}
     .calendar-cta-row{flex-direction:column; gap:10px;}
     .calendar-cta-row .btn{width:100%; justify-content:center;}
-    .calendar-modal{padding:10px;}
+    .calendar-modal{padding:10px; align-items:flex-end;}
     .calendar-modal-panel{width:100%; max-height:88vh; overflow:auto; border-radius:18px; padding:16px;}
+    .calendar-modal-panel{transform:translateY(36px) scale(.98);}
     .modal-header h4{font-size:20px;}
     .modal-focus h5{font-size:17px;}
   }
+  @media (hover:none){
+    .calendar-day:hover{transform:none; box-shadow:none;}
+    .calendar-day:active{transform:scale(.97); border-color:rgba(212,175,103,.8);}
+  }
   @media (max-width:420px){
-    .calendar-weekdays,
-    .calendar-grid{grid-template-columns:repeat(7, minmax(78px, 1fr));}
-    .calendar-day{min-height:96px;}
+    .calendar-grid{gap:7px;}
+    .calendar-day{min-height:88px; padding:9px 8px;}
   }
 
   /* ---------- CLIENT GRIDS ---------- */
@@ -560,7 +654,7 @@
       <a href="#case-studies">Case Studies</a>
       <a href="tel:+916355893624" class="nav-cta">Call for Strategy</a>
     </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu" aria-expanded="false">
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -579,7 +673,7 @@
       </div>
       <div class="hero-meta">
         <div class="hero-stat">
-          <div class="num">30+</div>
+          <div class="num">110+</div>
           <div class="lbl">Brands Guided</div>
           <div class="meta-note">Across service, lifestyle and local growth categories.</div>
         </div>
@@ -705,6 +799,48 @@
           <a href="#work-india" class="btn btn-ghost-ink">View Our Work</a>
         </div>
       </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= SPECIAL OFFERS ================= -->
+<section id="special-offers" class="on-ink offers-section">
+  <div class="wrap">
+    <div class="section-head reveal">
+      <div class="eyebrow">Limited Event Pricing</div>
+      <h2>Choose the growth sprint that fits your next move.</h2>
+      <p>Focused digital support for brands that want consistent content, daily visibility and clearer performance tracking.</p>
+    </div>
+
+    <div class="offer-grid reveal">
+      <article class="offer-card featured">
+        <div class="offer-ribbon">Best event value</div>
+        <div class="offer-kicker">Offer 01 · Event Special</div>
+        <h3>4-Week Social Visibility Sprint</h3>
+        <p>A complete month of planned content and daily audience touchpoints across the platforms where your brand is already building momentum.</p>
+        <div class="offer-price"><del>₹10,000</del><strong>₹2,999</strong><span>event price</span></div>
+        <ul class="offer-features">
+          <li>4 weeks of posting on Instagram, Facebook and LinkedIn</li>
+          <li>4 posts every week plus 1 special reel each week</li>
+          <li>Daily status and story support for all 4 weeks</li>
+          <li>Google Analytics improvement and performance review</li>
+        </ul>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Social%20Visibility%20Sprint%20for%20%E2%82%B92%2C999." class="btn btn-primary" target="_blank" rel="noopener">Claim Event Offer <span class="btn-arrow">→</span></a>
+      </article>
+
+      <article class="offer-card">
+        <div class="offer-kicker">Offer 02 · Growth Plus</div>
+        <h3>4-Week Presence &amp; Analytics Boost</h3>
+        <p>For businesses ready to pair a stronger publishing rhythm with a cleaner measurement system and sharper monthly decisions.</p>
+        <div class="offer-price"><del>₹15,000</del><strong>₹4,999</strong><span>event price</span></div>
+        <ul class="offer-features">
+          <li>Everything in the Social Visibility Sprint</li>
+          <li>Content direction and platform-specific planning</li>
+          <li>Google Analytics improvement with key goals and tracking checks</li>
+          <li>End-of-sprint performance summary with next-step recommendations</li>
+        </ul>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Presence%20%26%20Analytics%20Boost%20for%20%E2%82%B94%2C999." class="btn btn-ghost-ink" target="_blank" rel="noopener">Start Growth Plus <span class="btn-arrow">→</span></a>
+      </article>
     </div>
   </div>
 </section>
@@ -949,14 +1085,29 @@
   // mobile nav
   const navToggle = document.getElementById('navToggle');
   const primaryNav = document.getElementById('primaryNav');
+  function closeMobileNav() {
+    primaryNav.classList.remove('open');
+    navToggle.classList.remove('open');
+    navToggle.setAttribute('aria-label', 'Open menu');
+    navToggle.setAttribute('aria-expanded', 'false');
+    document.body.classList.remove('menu-open');
+  }
   navToggle.addEventListener('click', () => {
     const isOpen = primaryNav.classList.toggle('open');
+    navToggle.classList.toggle('open', isOpen);
+    navToggle.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
     navToggle.setAttribute('aria-expanded', isOpen);
+    document.body.classList.toggle('menu-open', isOpen);
   });
   primaryNav.querySelectorAll('a').forEach(a => a.addEventListener('click', () => {
-    primaryNav.classList.remove('open');
-    navToggle.setAttribute('aria-expanded', 'false');
+    closeMobileNav();
   }));
+  window.addEventListener('resize', () => {
+    if (window.innerWidth > 920) closeMobileNav();
+  });
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape' && primaryNav.classList.contains('open')) closeMobileNav();
+  });
 
   // scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
@@ -1087,6 +1238,7 @@
   }
 
   function renderCalendar() {
+    calendarGrid.classList.add('is-changing');
     calendarGrid.innerHTML = '';
     monthLabel.textContent = 'Day 1 - Day 28';
     calendarMonthLabel.textContent = '28-Day Growth Cycle';
@@ -1097,6 +1249,7 @@
       const dayButton = document.createElement('button');
       dayButton.type = 'button';
       dayButton.className = 'calendar-day';
+      dayButton.style.setProperty('--day-index', i);
       if (cellDate.toDateString() === new Date().toDateString()) dayButton.classList.add('is-today');
       if (i === selectedDayIndex) dayButton.classList.add('is-selected');
 
@@ -1123,6 +1276,7 @@
 
       calendarGrid.appendChild(dayButton);
     }
+    requestAnimationFrame(() => calendarGrid.classList.remove('is-changing'));
   }
 
   function openCalendarModal(dayIndex, date) {
