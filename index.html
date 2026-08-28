@@ -229,6 +229,7 @@
     max-width:560px; margin-bottom:38px;
   }
   .hero-ctas{display:flex; gap:16px; flex-wrap:wrap; margin-bottom:52px;}
+  .hero-ctas .btn{min-height:52px;}
   .hero-meta{display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; max-width:720px;}
   .hero-meta .hero-stat{
     background:linear-gradient(180deg, rgba(255,255,255,.06) 0%, rgba(255,255,255,.02) 100%);
@@ -273,17 +274,26 @@
   .service-card{background:linear-gradient(180deg, rgba(13,31,45,1) 0%, rgba(8,22,31,1) 100%); padding:34px 28px; transition:background .25s ease, transform .25s ease;}
   .service-card:hover{background:linear-gradient(180deg, rgba(18,39,54,1) 0%, rgba(10,25,35,1) 100%); transform:translateY(-3px);}
   .badge{
-    width:42px; height:42px; border-radius:10px; background:var(--accent-tint);
+    width:58px; height:58px; border-radius:14px; background:var(--accent-tint);
     border:1px solid rgba(212,175,103,.35); display:flex; align-items:center; justify-content:center;
-    font-family:var(--font-mono); font-size:12px; font-weight:600; color:var(--accent); margin-bottom:22px;
+    font-family:var(--font-mono); font-size:14px; font-weight:600; color:var(--accent); margin-bottom:22px;
   }
   .service-card h3{font-size:19px; color:var(--paper-text); margin-bottom:10px;}
+  .service-card .service-benefit{font-size:13px; color:var(--accent-soft); line-height:1.5; margin-bottom:16px;}
+  .service-card .service-benefit strong{color:var(--growth); font-weight:600;}
   .service-card p{font-size:14.5px; color:var(--muted-on-ink); line-height:1.6; margin-bottom:14px;}
   .service-card .sub-list{display:flex; flex-wrap:wrap; gap:8px;}
   .service-card .sub-list span{
     font-family:var(--font-mono); font-size:10.5px; color:var(--muted-on-ink);
     border:1px solid var(--ink-line); padding:5px 10px; border-radius:100px;
   }
+  .client-strip{display:flex; gap:16px; overflow-x:auto; padding:8px 2px 18px; scroll-snap-type:x proximity; scrollbar-color:var(--accent) transparent;}
+  .client-strip .client-card{flex:0 0 min(280px, 78vw); min-height:220px; scroll-snap-align:start;}
+  .client-strip::-webkit-scrollbar{height:6px;}
+  .client-strip::-webkit-scrollbar-thumb{background:var(--accent); border-radius:6px;}
+  .contact-actions{display:flex; gap:12px; flex-wrap:wrap; margin-top:4px;}
+  .contact-actions .btn{padding:13px 18px;}
+  @media (max-width:600px){.contact-actions{flex-direction:column;}.contact-actions .btn{justify-content:center;}}
 
   /* ---------- GROWTH SYSTEM ---------- */
   .system-flow{display:grid; grid-template-columns:repeat(4,1fr); gap:0; position:relative;}
@@ -538,6 +548,11 @@
     border:1px solid var(--ink-line); border-radius:18px; overflow:hidden; margin-bottom:26px; background:var(--ink-soft);
   }
   .case-head{padding:32px 32px 26px; border-bottom:1px solid var(--ink-line);}
+  .case-proof{display:grid; grid-template-columns:repeat(3,1fr); gap:1px; background:var(--ink-line); border:1px solid var(--ink-line); border-radius:16px; overflow:hidden; margin-bottom:26px;}
+  .case-proof-item{background:var(--ink-soft); padding:20px 22px;}
+  .case-proof-item strong{display:block; font-family:var(--font-mono); font-size:25px; color:var(--accent); line-height:1; margin-bottom:8px;}
+  .case-proof-item span{font-size:12px; color:var(--muted-on-ink);}
+  @media (max-width:600px){.case-proof{grid-template-columns:1fr;}}
   .case-head-top{display:flex; justify-content:space-between; align-items:flex-start; gap:20px; flex-wrap:wrap;}
   .case-head h3{font-size:24px; color:var(--paper-text);}
   .case-tag{font-family:var(--font-mono); font-size:11px; color:var(--muted-on-ink); margin-top:6px; text-transform:uppercase; letter-spacing:.06em;}
@@ -669,7 +684,8 @@
       <h1>We don't just manage your digital presence. <em>We build, track &amp; grow it.</em></h1>
       <p class="lead">From strategy and execution to analytics and reporting, Aadyaa gives businesses a clear digital growth system — so you always know what is happening, why it is happening, and what is improving.</p>
       <div class="hero-ctas">
-        <a href="tel:+916355893624" class="btn btn-primary">Call Now <span class="btn-arrow">→</span></a>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20a%20free%20digital%20audit." class="btn btn-primary" target="_blank" rel="noopener">Free Digital Audit on WhatsApp <span class="btn-arrow">→</span></a>
+        <a href="tel:+916355893624" class="btn btn-ghost-ink">Call Now <span class="btn-arrow">→</span></a>
       </div>
       <div class="hero-meta">
         <div class="hero-stat">
@@ -725,33 +741,33 @@
       <div class="service-card">
         <div class="badge">SEO</div>
         <h3>High-Performance SEO</h3>
+        <div class="service-benefit"><strong>Benefit:</strong> Google pe pehla dikhna.</div>
         <p>Technical health, on-page optimization and content structured to improve search visibility over time — tracked month over month, not left to chance.</p>
       </div>
       <div class="service-card">
         <div class="badge">SM</div>
         <h3>Social Media &amp; Meta Strategy</h3>
+        <div class="service-benefit"><strong>Benefit:</strong> Har week audience ke saamne rehna.</div>
         <p>Platform-specific strategy, not the same post recycled everywhere.</p>
         <div class="sub-list"><span>Instagram</span><span>Facebook</span><span>WhatsApp Business Automation</span><span>LinkedIn</span></div>
       </div>
       <div class="service-card">
         <div class="badge">GA</div>
         <h3>Google Analytics &amp; Performance Tracking</h3>
+        <div class="service-benefit"><strong>Benefit:</strong> Pata chalega kya kaam kar raha hai.</div>
         <p>Correct tracking setup, clean dashboards, and performance checkpoints built into the growth calendar itself.</p>
       </div>
       <div class="service-card">
         <div class="badge">BP</div>
         <h3>Brand Positioning &amp; Special Showcase</h3>
+        <div class="service-benefit"><strong>Benefit:</strong> Brand premium aur memorable lage.</div>
         <p>Defining how a business should be seen, then building the digital presence to match — including dedicated showcase moments for key offerings.</p>
       </div>
       <div class="service-card">
         <div class="badge">CO</div>
         <h3>Content &amp; Online Presence Optimization</h3>
+        <div class="service-benefit"><strong>Benefit:</strong> Har profile visitor ko trust de.</div>
         <p>Profiles, listings and content refined so every touchpoint reflects the brand at its best — not just the feed.</p>
-      </div>
-      <div class="service-card">
-        <div class="badge">GC</div>
-        <h3>The Growth Calendar Layer</h3>
-        <p>Everything above is planned on one structured calendar the client can see — the system that ties all of it together.</p>
       </div>
     </div>
   </div>
@@ -825,7 +841,7 @@
           <li>Daily status and story support for all 4 weeks</li>
           <li>Google Analytics improvement and performance review</li>
         </ul>
-        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Social%20Visibility%20Sprint%20for%20%E2%82%B92%2C999." class="btn btn-primary" target="_blank" rel="noopener">Claim Event Offer <span class="btn-arrow">→</span></a>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Social%20Visibility%20Sprint%20for%20%E2%82%B98%2C999." class="btn btn-primary" target="_blank" rel="noopener">Claim Event Offer <span class="btn-arrow">→</span></a>
       </article>
 
       <article class="offer-card">
@@ -839,7 +855,7 @@
           <li>Google Analytics improvement with key goals and tracking checks</li>
           <li>End-of-sprint performance summary with next-step recommendations</li>
         </ul>
-        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Presence%20%26%20Analytics%20Boost%20for%20%E2%82%B94%2C999." class="btn btn-ghost-ink" target="_blank" rel="noopener">Start Growth Plus <span class="btn-arrow">→</span></a>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20the%204-week%20Presence%20%26%20Analytics%20Boost%20for%20%E2%82%B99%2C999." class="btn btn-ghost-ink" target="_blank" rel="noopener">Start Growth Plus <span class="btn-arrow">→</span></a>
       </article>
     </div>
   </div>
@@ -849,7 +865,7 @@
 <section id="work-india" class="on-ink">
   <div class="wrap">
     <div class="section-head reveal">
-      <div class="eyebrow">India Client Projects</div>
+      <div class="eyebrow">Client Work</div>
       <h2>Brands we work with across India.</h2>
       <p>A mix of local and category-leading businesses — each on their own Aadyaa Growth Calendar and reporting cycle.</p>
     </div>
@@ -939,7 +955,11 @@
       <h2>Two growth stories, start to finish.</h2>
       <p>Every Aadyaa project follows the same six-stage story — from the original challenge to what we're improving next. Full metrics are added as each engagement progresses.</p>
     </div>
-
+      <div class="case-proof reveal">
+        <div class="case-proof-item"><strong>110+</strong><span>Brands guided</span></div>
+        <div class="case-proof-item"><strong>28</strong><span>Days in each growth cycle</span></div>
+        <div class="case-proof-item"><strong>6</strong><span>Execution days each week</span></div>
+      </div>
     <div class="case-study reveal">
       <div class="case-head">
         <div class="case-head-top">
@@ -996,8 +1016,8 @@
 <section id="contact" class="on-ink">
   <div class="wrap contact-grid">
     <div class="contact-left reveal">
-      <div class="eyebrow">Book a Strategy Call</div>
-      <h2>Let's build your Growth Calendar.</h2>
+      <div class="eyebrow">Your Next Digital Move</div>
+      <h2>Ready to make your digital growth clearer?</h2>
       <p>Tell us a little about the business and where it currently stands online. We'll walk you through what a first Aadyaa Growth Calendar and reporting cycle would look like.</p>
       <div class="contact-points">
         <div class="contact-point">
@@ -1008,6 +1028,11 @@
           <div class="ic is-location"><span>BASE</span></div>
           <div class="txt"><div class="lbl">Based in</div><span>Ahmedabad, India — serving clients globally</span></div>
         </div>
+      </div>
+      <div class="contact-actions">
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20to%20talk%20about%20digital%20growth." class="btn btn-primary" target="_blank" rel="noopener">WhatsApp par baat karo <span class="btn-arrow">→</span></a>
+        <a href="https://wa.me/916355893624?text=Hi%20Aadyaa%2C%20I%20want%20a%20free%20digital%20audit." class="btn btn-ghost-ink" target="_blank" rel="noopener">Free Audit lo <span class="btn-arrow">→</span></a>
+        <a href="tel:+916355893624" class="btn btn-ghost-ink">Call karo <span class="btn-arrow">→</span></a>
       </div>
       <p class="hinglish-line">Budget ya package ke baare mein baat karni ho? Seedha DM kariye is number par — <strong>+91 63558 93624</strong></p>
     </div>
@@ -1061,8 +1086,7 @@
         </div>
         <div class="footer-col">
           <h5>Work</h5>
-          <a href="#work-india">Indian Clients</a>
-          <a href="#work-global">International Clients</a>
+          <a href="#work-india">Client Work</a>
         </div>
         <div class="footer-col">
           <h5>Contact</h5>
@@ -1108,6 +1132,31 @@
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && primaryNav.classList.contains('open')) closeMobileNav();
   });
+
+  // Keep the visitor journey focused on value, proof, and action.
+  const page = document.body;
+  const footer = document.querySelector('footer');
+  const sectionOrder = ['home', 'special-offers', 'services', 'calendar', 'case-studies', 'work-india', 'about', 'testimonials', 'contact'];
+  sectionOrder.forEach(id => {
+    const section = document.getElementById(id);
+    if (section && footer) page.insertBefore(section, footer);
+  });
+
+  const indiaWork = document.getElementById('work-india');
+  const globalWork = document.getElementById('work-global');
+  if (indiaWork && globalWork) {
+    const heading = indiaWork.querySelector('.section-head h2');
+    const intro = indiaWork.querySelector('.section-head p');
+    const indiaGrid = indiaWork.querySelector('.client-grid');
+    const globalGrid = globalWork.querySelector('.client-grid');
+    if (heading) heading.textContent = 'Client work across India and the world.';
+    if (intro) intro.textContent = 'A selection of service-led businesses running on the Aadyaa Growth Calendar.';
+    if (indiaGrid && globalGrid) {
+      indiaGrid.classList.add('client-strip');
+      [...globalGrid.children].forEach(card => indiaGrid.appendChild(card));
+    }
+    globalWork.remove();
+  }
 
   // scroll reveal
   const revealEls = document.querySelectorAll('.reveal');
