@@ -45,8 +45,7 @@
   function updateSelection() {
     const selected = boxes.filter(box => box.checked).map(box => box.value);
     selectionLabel.textContent = selected.length ? `${selected.length} add-on${selected.length === 1 ? '' : 's'} selected` : 'No add-ons selected';
-    const message = `Hi Aadyaa, I want the ${plan}. ${selected.length ? `Please discuss these optional add-ons: ${selected.join(', ')}.` : 'I would like to discuss the package.'}`;
-    continueWhatsApp.href = `https://wa.me/916355893624?text=${encodeURIComponent(message)}`;
+    continueWhatsApp.href = `enquiry.html?source=offer&package=${encodeURIComponent(plan)}&addons=${encodeURIComponent(selected.length ? selected.join(', ') : 'None selected')}`;
   }
   boxes.forEach(box => box.addEventListener('change', updateSelection));
   updateSelection();

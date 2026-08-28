@@ -450,6 +450,22 @@
     padding:24px; transform:translateY(20px) scale(.98); transition:transform .25s ease;
   }
   .calendar-modal.is-open .calendar-modal-panel{transform:translateY(0) scale(1);}
+  .strategy-modal{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:20px;background:rgba(2,6,12,.7);backdrop-filter:blur(8px);opacity:0;pointer-events:none;transition:opacity .25s ease;z-index:240;}
+  .strategy-modal.is-open{opacity:1;pointer-events:auto;}
+  .strategy-panel{width:min(460px,100%);background:linear-gradient(180deg,#122736,#08141e);border:1px solid rgba(212,175,103,.35);border-radius:22px;padding:26px;box-shadow:0 30px 70px -35px #000;transform:translateY(16px);transition:transform .25s ease;}
+  .strategy-modal.is-open .strategy-panel{transform:translateY(0);}
+  .strategy-panel h3{font-size:28px;color:var(--paper-text);margin-bottom:8px;}
+  .strategy-panel p{color:var(--muted-on-ink);font-size:14px;line-height:1.6;margin-bottom:20px;}
+  .strategy-form-row{margin-bottom:14px;}
+  .strategy-form-row label{display:block;font-family:var(--font-mono);font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted-on-ink);margin-bottom:7px;}
+  .strategy-form-row input{width:100%;background:var(--ink);border:1px solid var(--ink-line);border-radius:9px;padding:13px 14px;color:var(--paper-text);font-family:var(--font-body);font-size:14px;}
+  .strategy-form-row input:focus{outline:2px solid var(--accent);outline-offset:2px;}
+  .strategy-actions{display:flex;gap:10px;margin-top:20px;}
+  .strategy-actions .btn{flex:1;justify-content:center;padding:13px 14px;}
+  .strategy-close{position:absolute;top:20px;right:20px;width:38px;height:38px;border:1px solid var(--ink-line);border-radius:10px;color:var(--paper-text);font-size:22px;background:rgba(255,255,255,.05);}
+  .strategy-success{display:none;color:var(--accent);font-family:var(--font-mono);font-size:13px;margin-top:14px;}
+  .strategy-form.is-submitted .strategy-success{display:block;}
+  .strategy-form.is-submitted .strategy-actions,.strategy-form.is-submitted .strategy-form-row{display:none;}
   .modal-header{display:flex; justify-content:space-between; gap:16px; align-items:flex-start; margin-bottom:18px;}
   .modal-header h4{font-size:clamp(22px,2vw,28px); color:var(--paper-text);}
   .modal-close{
@@ -667,7 +683,7 @@
       <a href="#calendar">Calendar</a>
       <a href="#work-india">Work</a>
       <a href="#case-studies">Case Studies</a>
-      <a href="tel:+916355893624" class="nav-cta">Call for Strategy</a>
+      <a href="#strategyModal" class="nav-cta strategy-trigger">Call for Strategy</a>
     </nav>
     <button type="button" class="nav-toggle" id="navToggle" aria-label="Open menu" aria-controls="primaryNav" aria-expanded="false">
       <span></span><span></span><span></span>
@@ -1066,6 +1082,21 @@
   </div>
 </div>
 
+<div class="strategy-modal" id="strategyModal" aria-hidden="true">
+  <div class="strategy-panel" role="dialog" aria-modal="true" aria-labelledby="strategyTitle">
+    <button type="button" class="strategy-close" id="strategyClose" aria-label="Close">×</button>
+    <div class="eyebrow">Free strategy call</div>
+    <h3 id="strategyTitle">Tell us where to call you.</h3>
+    <p>Share your name and phone number. Your enquiry will be saved for the Aadyaa team to follow up.</p>
+    <form class="strategy-form" id="strategyForm">
+      <div class="strategy-form-row"><label for="strategyName">Name</label><input id="strategyName" required autocomplete="name" placeholder="Your name"></div>
+      <div class="strategy-form-row"><label for="strategyPhone">Phone / WhatsApp number</label><input id="strategyPhone" required type="tel" autocomplete="tel" placeholder="+91 63558 93624"></div>
+      <div class="strategy-actions"><button type="submit" class="btn btn-primary">Request Call <span class="btn-arrow">→</span></button><button type="button" class="btn btn-ghost-ink" id="strategyCancel">Cancel</button></div>
+      <div class="strategy-success">Saved. Aadyaa will contact you soon.</div>
+    </form>
+  </div>
+</div>
+
 <a class="wa-float" href="https://wa.me/916355893624" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
   <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#0a0a0c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path></svg>
 </a>
@@ -1131,6 +1162,27 @@
   });
   document.addEventListener('keydown', (event) => {
     if (event.key === 'Escape' && primaryNav.classList.contains('open')) closeMobileNav();
+  });
+
+  // Save strategy-call leads locally for the admin view.
+  const strategyModal = document.getElementById('strategyModal');
+  const strategyForm = document.getElementById('strategyForm');
+  const closeStrategy = () => { strategyModal.classList.remove('is-open'); strategyModal.setAttribute('aria-hidden', 'true'); };
+  document.querySelectorAll('.strategy-trigger').forEach(trigger => trigger.addEventListener('click', event => {
+    event.preventDefault();
+    strategyModal.classList.add('is-open');
+    strategyModal.setAttribute('aria-hidden', 'false');
+  }));
+  document.getElementById('strategyClose').addEventListener('click', closeStrategy);
+  document.getElementById('strategyCancel').addEventListener('click', closeStrategy);
+  strategyModal.addEventListener('click', event => { if (event.target === strategyModal) closeStrategy(); });
+  strategyForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const lead = { id: Date.now(), name: document.getElementById('strategyName').value.trim(), phone: document.getElementById('strategyPhone').value.trim(), package: 'Strategy call', addons: 'None selected', source: 'Call for Strategy popup', createdAt: new Date().toLocaleString() };
+    const leads = JSON.parse(localStorage.getItem('aadyaaLeads') || '[]');
+    leads.unshift(lead);
+    localStorage.setItem('aadyaaLeads', JSON.stringify(leads));
+    strategyForm.classList.add('is-submitted');
   });
 
   // Keep the visitor journey focused on value, proof, and action.
