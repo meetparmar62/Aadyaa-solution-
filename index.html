@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
-<style>
+<script src="aadyaa-config.js"></script><style>
   :root{
     --ink:#071827;
     --ink-soft:#0d1f2d;
@@ -1435,6 +1435,11 @@
     waSubmit.href = 'https://wa.me/916355893624?text=' + encodeURIComponent(text);
   }
   [fName, fBiz, fMsg].forEach(el => el.addEventListener('input', updateWaLink));
+</script><script>
+  strategyForm.addEventListener('submit', async () => {
+    const lead = { name: document.getElementById('strategyName').value.trim(), phone: document.getElementById('strategyPhone').value.trim(), package: 'Strategy call', addons: 'None selected', source: 'Call for Strategy popup', createdAt: new Date().toISOString() };
+    try { await saveAadyaaLead(lead); } catch (error) { console.warn(error.message); }
+  });
 </script>
 
 </body>
